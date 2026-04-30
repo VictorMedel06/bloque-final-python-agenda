@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+"""
+Punto de entrada de la aplicación.
+"""
+
 import tkinter as tk
 from pathlib import Path
 

@@ -1,5 +1,16 @@
 from __future__ import annotations
 
+"""
+Interfaz gráfica (Tkinter/ttk) de la agenda de contactos.
+
+Incluye:
+- CRUD
+- búsqueda exacta y fuzzy (RapidFuzz)
+- importación/exportación CSV
+- deduplicación con fusión
+- mejoras de UX (menú, tooltips, modo oscuro, etc.)
+"""
+
 import csv
 import sqlite3
 import tkinter as tk

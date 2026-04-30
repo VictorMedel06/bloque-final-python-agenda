@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+"""
+Acceso a datos (SQLite) para la agenda.
+
+Aquí se define el esquema y las operaciones CRUD.
+"""
+
 import sqlite3
 from datetime import datetime
 from pathlib import Path

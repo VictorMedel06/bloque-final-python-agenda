@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+"""
+Validaciones de entrada para la aplicación.
+
+Se centralizan aquí para reutilizarlas en UI e importación/exportación.
+"""
+
 import re
 from typing import Optional
 

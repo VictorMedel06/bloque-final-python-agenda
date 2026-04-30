@@ -1,5 +1,13 @@
 from __future__ import annotations
 
+"""
+Lógica de deduplicación de contactos.
+
+Usa RapidFuzz para calcular similitud entre nombres y agrupar contactos
+potencialmente duplicados. Además, considera duplicado seguro si el teléfono
+o el email coinciden exactamente.
+"""
+
 import unicodedata
 
 from contact_app.models import Contact
