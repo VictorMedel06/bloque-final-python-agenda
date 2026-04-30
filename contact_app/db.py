@@ -14,6 +14,17 @@ from typing import Optional
 from contact_app.models import Contact
 
 
+_SEED_CONTACTS: list[Contact] = [
+    Contact(id=None, name="Juan Pérez", phone="600123456", email="juan.perez@example.com"),
+    Contact(id=None, name="J. Perez", phone="600123456", email=""),
+    Contact(id=None, name="Lucía Martín", phone="611222333", email="lucia.martin@example.com"),
+    Contact(id=None, name="Lucia Martin", phone="611222334", email="luciamartin@example.com"),
+    Contact(id=None, name="Ana García", phone="622333444", email="ana.garcia@example.com"),
+    Contact(id=None, name="Carlos Ruiz", phone="633444555", email="carlos.ruiz@example.com"),
+    Contact(id=None, name="Marta López", phone="644555666", email="marta.lopez@example.com"),
+]
+
+
 def connect(db_path: Path) -> sqlite3.Connection:
     db_path.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(db_path)
@@ -35,6 +46,7 @@ def init_db(conn: sqlite3.Connection) -> None:
         """
     )
     conn.commit()
+    ensure_demo_contacts(conn)
 
 
 def add_contact(conn: sqlite3.Connection, contact: Contact) -> int:
@@ -101,6 +113,26 @@ def count_contacts(conn: sqlite3.Connection, search: Optional[str] = None) -> in
     if row is None:
         return 0
     return int(row["total"])
+
+
+def ensure_demo_contacts(conn: sqlite3.Connection) -> int:
+    now = datetime.utcnow().isoformat(timespec="seconds")
+    inserted = 0
+    for c in _SEED_CONTACTS:
+        exists = conn.execute(
+            "SELECT 1 FROM contacts WHERE name = ? AND phone = ? AND email = ? LIMIT 1",
+            (c.name, c.phone, c.email),
+        ).fetchone()
+        if exists is not None:
+            continue
+        conn.execute(
+            "INSERT INTO contacts (name, phone, email, created_at) VALUES (?, ?, ?, ?)",
+            (c.name, c.phone, c.email, now),
+        )
+        inserted += 1
+    if inserted:
+        conn.commit()
+    return inserted
 
 
 def _row_to_contact(row: sqlite3.Row) -> Contact:
